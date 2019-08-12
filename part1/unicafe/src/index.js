@@ -10,7 +10,10 @@ const Button = ({clickHandler, text}) => (
 const Statistic = (props) => {
 	return (
 		<>
-			<p>{props.text} {props.value}</p>
+			<tr>
+				<td>{props.text}</td>
+				<td>{props.value}</td>
+			</tr>
 		</>
 	)
 }
@@ -38,12 +41,16 @@ const Statistics = (props) => {
 
 	return (
 		<>
-			<Statistic text="Good" value={good} />
-			<Statistic text="Neutral" value={neutral} />
-			<Statistic text="Bad" value={bad} />
-			<Statistic text="Sum" value={sum} />
-			<Statistic text="Average" value={avg} />
-			<Statistic text="Positive" value={pos} />
+			<table>
+				<tbody>
+					<Statistic text="Good" value={good} />
+					<Statistic text="Neutral" value={neutral} />
+					<Statistic text="Bad" value={bad} />
+					<Statistic text="Sum" value={sum} />
+					<Statistic text="Average" value={avg} />
+					<Statistic text="Positive" value={pos} />
+				</tbody>
+			</table>
 		</>
 	)
 }
