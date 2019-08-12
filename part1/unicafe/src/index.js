@@ -20,6 +20,14 @@ const Statistics = (props) => {
 		pos = good / sum * 100
 	}
 
+	if (sum === 0) {
+		return (
+			<>
+				<p>No feedback given</p>
+			</>
+		)
+	}
+
 	return (
 		<>
 			<p>Good {good}</p>
