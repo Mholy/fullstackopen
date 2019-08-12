@@ -7,6 +7,14 @@ const Button = ({clickHandler, text}) => (
 	</>
 )
 
+const Statistic = (props) => {
+	return (
+		<>
+			<p>{props.text} {props.value}</p>
+		</>
+	)
+}
+
 const Statistics = (props) => {
 	const {good, neutral, bad} = props
 	let sum = 0
@@ -30,12 +38,12 @@ const Statistics = (props) => {
 
 	return (
 		<>
-			<p>Good {good}</p>
-			<p>Neutral {neutral}</p>
-			<p>Bad {bad}</p>
-			<p>Sum {sum}</p>
-			<p>Average {avg}</p>
-			<p>Positive {pos} %</p>
+			<Statistic text="Good" value={good} />
+			<Statistic text="Neutral" value={neutral} />
+			<Statistic text="Bad" value={bad} />
+			<Statistic text="Sum" value={sum} />
+			<Statistic text="Average" value={avg} />
+			<Statistic text="Positive" value={pos} />
 		</>
 	)
 }
