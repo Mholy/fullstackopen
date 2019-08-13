@@ -1,33 +1,39 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = props =>
-		<h1>{props.course}</h1>
+const Course = ( {course} ) => {
+return (
+	<>
+		<Header course={course.name} />
+		<Content parts={course.parts} />
+		{/* <Total parts={course.parts}/> */}
+	</>
+)
+}
 
-const Content = props => {
-	const parts = props.parts
+const Header = ( {course} ) =>
+		<h1>{course}</h1>
+
+const Content = ( {parts} ) => {
+	const content = () => parts.map(part =>
+		<Part key={part.id} part={part} />
+	)
 
 	return (
 		<>
-			<Part part={parts[0]} />
-			<Part part={parts[1]} />
-			<Part part={parts[2]} />
+			{content()}
 		</>
 	)
 }
 
-const Total = props => {
-	const parts = props.parts
+const Part = ( {part} ) =>
+		<p>{part.name} {part.exercises}</p>
 
-	return (
-		<>
-			<p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
-		</>
-	)
-}
-
-const Part = props =>
-		<p>{props.part.name} {props.part.exercises}</p>
+const Total = ( {parts} ) => (
+	<>
+		<p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
+	</>
+)
 
 const App = () => {
 	const course = {
@@ -35,24 +41,30 @@ const App = () => {
 		parts: [
 			{
 				name: 'Fundamentals of React',
-				exercises: 10
+				exercises: 10,
+				id: 1
 			},
 			{
 				name: 'Using props to pass data',
-				exercises: 7
+				exercises: 7,
+				id: 2
 			},
 			{
 				name: 'State of a component',
-				exercises: 14
+				exercises: 14,
+				id: 3
+			},
+			{
+				name: 'Redux',
+				exercises: 11,
+				id: 4
 			}
 		]
 	}
 
 	return (
 		<>
-			<Header course={course.name} />
-			<Content parts={course.parts} />
-			<Total parts={course.parts}/>
+			<Course course={course} />
 		</>
 	)
 }
