@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -9,31 +12,39 @@ const App = () => {
     ])
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
-    const [filterPhonebook, setFilterPhonebook] = useState('')
+    const [personsFilter, setPersonsFilter] = useState('')
 
-    const phonesToShow = filterPhonebook 
-        ? persons.filter(person => person.name.toLowerCase().includes(filterPhonebook.toLowerCase()))
-        : persons
-
-    const checkPersonAdded = (persons, newPerson) => {
-        let personAdded = false;
-        for (let person of persons)  {
-            if (person.name.toLowerCase() === newPerson.name.toLowerCase()) {
-                personAdded = true;
-            }
-        }
-        return  personAdded
+    const handleNameAdd = event => {
+        setNewName(event.target.value)
     }
 
-    const addName = (event) => {
+    const handleNumberAdd = event => {
+        setNewNumber(event.target.value)
+    }
+
+    const handleFilter = event => {
+        setPersonsFilter(event.target.value)
+    }
+
+    const checkPersonAdded = (persons, newPerson) => {
+        let personAdded = false
+        for (let person of persons) {
+            if (person.name.toLowerCase() === newPerson.name.toLowerCase()) {
+                personAdded = true
+            }
+        }
+        return personAdded
+    }
+
+    const addName = event => {
         event.preventDefault()
-        
+
         const newPerson = {
             name: newName,
             number: newNumber
         }
 
-        if ( checkPersonAdded(persons, newPerson) ) {
+        if (checkPersonAdded(persons, newPerson)) {
             alert(`${newPerson.name} is already added to the phonebook`)
         } else {
             setPersons(persons.concat(newPerson))
@@ -42,44 +53,21 @@ const App = () => {
         }
     }
 
-    const handleNameAdd = (event) => {
-        setNewName(event.target.value)
-    }
-
-    const handleNumberAdd = (event) => {
-        setNewNumber(event.target.value)
-    }
-
-    const handleFiltering = (event) => {
-        setFilterPhonebook(event.target.value)
-    }
-
-    const renderNames = () => phonesToShow.map(person =>
-        <div key={person.name}>{person.name} {person.number}</div>
-    )
-
     return (
-        <div>
+        <>
             <h2>Phonebook</h2>
-            <div>
-                filter shown with <input onChange={handleFiltering} />
-            </div>
-            <form onSubmit={addName}>
-                <div>
-                    name: <input value={newName} onChange={handleNameAdd} />
-                </div>
-                <div>
-                    number: <input value={newNumber} onChange={handleNumberAdd} />
-                </div>
-                <div>
-                    <button type="submit">add</button>
-                </div>
-            </form>
+            <Filter handleFilter={handleFilter} />
+            <h2>Add a new</h2>
+            <PersonForm
+                addName={addName}
+                handleNameAdd={handleNameAdd}
+                handleNumberAdd={handleNumberAdd}
+                newName={newName}
+                newNumber={newNumber}
+            />
             <h2>Numbers</h2>
-            <div>
-                {renderNames()}
-            </div>
-        </div>
+            <Persons persons={persons} personsFilter={personsFilter} />
+        </>
     )
 }
 
