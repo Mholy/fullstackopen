@@ -20,8 +20,8 @@ const App = () => {
 
     return (
         <>
-            <Filter handleFilter={handleFilter} />
-            <Countries countries={countries} filter={filter} />
+            <Filter value={filter} handleFilter={handleFilter} />
+            <Countries countries={countries} filter={filter} handleFilter={handleFilter} />
         </>
     )
 }
