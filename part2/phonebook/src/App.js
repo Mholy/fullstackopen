@@ -14,7 +14,7 @@ const App = () => {
     const [personsFilter, setPersonsFilter] = useState('')
     const [successMessage, setSuccessMessage] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
-    
+
     useEffect(() => {
         personsService
             .getAll()
@@ -42,13 +42,15 @@ const App = () => {
                     setSuccessMessage(`Deleted ${name}`)
                     setTimeout(() => {
                         setSuccessMessage(null)
-                    }, 5000);
+                    }, 5000)
                 })
                 .catch(error => {
-                    setErrorMessage(`The ${name} was already deleted from server`)
+                    setErrorMessage(
+                        `The ${name} was already deleted from server`
+                    )
                     setTimeout(() => {
                         setErrorMessage(null)
-                    }, 5000);
+                    }, 5000)
                     setPersons(persons.filter(person => person.id !== id))
                 })
         }
@@ -74,34 +76,56 @@ const App = () => {
 
         const addedPerson = checkPersonAdded(persons, newPerson)
         if (addedPerson) {
-            if ( window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`, false) ) {
+            if (
+                window.confirm(
+                    `${
+                        newPerson.name
+                    } is already added to the phonebook, replace the old number with a new one?`,
+                    false
+                )
+            ) {
                 personsService
-                    .update(addedPerson.id, {...addedPerson, number: newPerson.number})
+                    .update(addedPerson.id, {
+                        ...addedPerson,
+                        number: newPerson.number
+                    })
                     .then(updatedPerson => {
-                        setPersons(persons.map(person => person.id !== addedPerson.id ? person : updatedPerson))
+                        setPersons(
+                            persons.map(person =>
+                                person.id !== addedPerson.id
+                                    ? person
+                                    : updatedPerson
+                            )
+                        )
                         setSuccessMessage(`Updated ${updatedPerson.name}`)
                         setTimeout(() => {
                             setSuccessMessage(null)
-                        }, 5000);
+                        }, 5000)
                     })
                     .catch(error => {
-                        setErrorMessage(`The ${addedPerson.name} was already deleted from server`)
+                        setErrorMessage(
+                            `The ${
+                                addedPerson.name
+                            } was already deleted from server`
+                        )
                         setTimeout(() => {
                             setErrorMessage(null)
-                        }, 5000);
-                        setPersons(persons.filter(person => person.id !== addedPerson.id))
+                        }, 5000)
+                        setPersons(
+                            persons.filter(
+                                person => person.id !== addedPerson.id
+                            )
+                        )
                     })
             }
         } else {
-            personsService
-                .create(newPerson)
-                .then(returnedPerson => {
-                    setPersons(persons.concat(returnedPerson))
-                    setSuccessMessage(`Added ${returnedPerson.name}`)
-                    setTimeout(() => {
-                        setSuccessMessage(null)
-                    }, 5000);
-                })
+            personsService.create(newPerson).then(returnedPerson => {
+                setPersons(persons.concat(returnedPerson))
+                setSuccessMessage(`Added ${returnedPerson.name}`)
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 5000)
+            })
         }
 
         setNewName('')
@@ -123,7 +147,11 @@ const App = () => {
                 newNumber={newNumber}
             />
             <h2>Numbers</h2>
-            <Persons persons={persons} personsFilter={personsFilter} handleDeleting={handleDeleting} />
+            <Persons
+                persons={persons}
+                personsFilter={personsFilter}
+                handleDeleting={handleDeleting}
+            />
         </>
     )
 }

@@ -10,7 +10,11 @@ const Persons = ({ persons, personsFilter, handleDeleting }) => {
 
     const renderPersons = () =>
         filteredPersons.map(person => (
-            <SinglePerson key={person.id} person={person} handleDeleting={handleDeleting} />
+            <SinglePerson
+                key={person.id}
+                person={person}
+                handleDeleting={handleDeleting}
+            />
         ))
 
     return <div>{renderPersons()}</div>
