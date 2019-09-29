@@ -5,7 +5,10 @@ import personsService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import { SuccessNotification, ErrorNotification } from './components/Notifications'
+import {
+    SuccessNotification,
+    ErrorNotification,
+} from './components/Notifications'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -71,23 +74,21 @@ const App = () => {
         const newPerson = {
             name: newName,
             number: newNumber,
-            id: persons.length + 1
+            id: persons.length + 1,
         }
 
         const addedPerson = checkPersonAdded(persons, newPerson)
         if (addedPerson) {
             if (
                 window.confirm(
-                    `${
-                        newPerson.name
-                    } is already added to the phonebook, replace the old number with a new one?`,
+                    `${newPerson.name} is already added to the phonebook, replace the old number with a new one?`,
                     false
                 )
             ) {
                 personsService
                     .update(addedPerson.id, {
                         ...addedPerson,
-                        number: newPerson.number
+                        number: newPerson.number,
                     })
                     .then(updatedPerson => {
                         setPersons(
@@ -104,9 +105,7 @@ const App = () => {
                     })
                     .catch(error => {
                         setErrorMessage(
-                            `The ${
-                                addedPerson.name
-                            } was already deleted from server`
+                            `The ${addedPerson.name} was already deleted from server`
                         )
                         setTimeout(() => {
                             setErrorMessage(null)
@@ -119,13 +118,21 @@ const App = () => {
                     })
             }
         } else {
-            personsService.create(newPerson).then(returnedPerson => {
-                setPersons(persons.concat(returnedPerson))
-                setSuccessMessage(`Added ${returnedPerson.name}`)
-                setTimeout(() => {
-                    setSuccessMessage(null)
-                }, 5000)
-            })
+            personsService
+                .create(newPerson)
+                .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
+                    setSuccessMessage(`Added ${returnedPerson.name}`)
+                    setTimeout(() => {
+                        setSuccessMessage(null)
+                    }, 5000)
+                })
+                .catch(error => {
+                    setErrorMessage(error.response.data.error)
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
+                })
         }
 
         setNewName('')
